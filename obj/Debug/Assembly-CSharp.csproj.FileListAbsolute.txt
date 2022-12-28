@@ -1,0 +1,2 @@
+D:\Acer\Users\Acer PC\Desktop\Initial D Video Game\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\Acer\Users\Acer PC\Desktop\Initial D Video Game\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

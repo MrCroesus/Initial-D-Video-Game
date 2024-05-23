@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerControllerScript : MonoBehaviour
 {
@@ -53,6 +54,9 @@ public class PlayerControllerScript : MonoBehaviour
     private GameObject rimRL;
     private GameObject rimRR;
 
+    // Multiplayer
+    PhotonView view;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +78,9 @@ public class PlayerControllerScript : MonoBehaviour
         rimFR = GameObject.Find("RimFR");
         rimRL = GameObject.Find("RimRL");
         rimRR = GameObject.Find("RimRR");
+
+        // Multiplayer
+        view = GetComponent<PhotonView>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -89,62 +96,65 @@ public class PlayerControllerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Get input from axes
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-
-        //Get speed
-        speed = rb.velocity.magnitude;
-
-        //Gear shift up
-        if (Input.GetKeyDown(KeyCode.UpArrow) && currentGear < numGears)
+        if (view.IsMine)
         {
-            currentGear += 1;
+            //Get input from axes
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+
+            //Get speed
+            speed = rb.velocity.magnitude;
+
+            //Gear shift up
+            if (Input.GetKeyDown(KeyCode.UpArrow) && currentGear < numGears)
+            {
+                currentGear += 1;
+            }
+            //Gear shift down
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentGear > 1)
+            {
+                currentGear -= 1;
+            }
+
+            //The car can only be controlled if it is on the ground
+            if (colliderCount > 0)
+            {
+                //Get acceleration based on current gear if speed is within the gear's speed range
+                if (speed >= gearSpeeds[currentGear - 1] * 0.9 && speed <= gearSpeeds[currentGear] * 1.1)
+                {
+                    acceleration = accelerations[currentGear - 1];
+                }
+                //Set acceleration to first gear acceleration otherwise
+                else
+                {
+                    acceleration = accelerations[0];
+                }
+
+                //Accelerate
+                if (verticalInput == 1)
+                {
+                    rb.AddForce(transform.forward * acceleration * Time.deltaTime, ForceMode.Impulse);
+                }
+                //Brake
+                else if (verticalInput == -1)
+                {
+                    rb.AddForce(transform.forward * -brakeForce * Time.deltaTime, ForceMode.Impulse);
+                }
+
+                //Turn the car and wheels if the car is going fast enough
+                if (speed > minSpeedBeforeTurning)
+                {
+                    transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput * verticalInput);
+                    wheelFL.transform.localRotation = Quaternion.Euler(0, turnSpeed / 2 * horizontalInput, 90);
+                    wheelFR.transform.localRotation = Quaternion.Euler(0, turnSpeed / 2 * horizontalInput, -90);
+                }
+            }
+
+            //Rotate the wheels
+            rimFL.transform.Rotate(Vector3.back, speed);
+            rimFR.transform.Rotate(Vector3.back, speed);
+            rimRL.transform.Rotate(Vector3.back, speed);
+            rimRR.transform.Rotate(Vector3.back, speed);
         }
-        //Gear shift down
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && currentGear > 1)
-        {
-            currentGear -= 1;
-        }
-
-        //The car can only be controlled if it is on the ground
-        if (colliderCount > 0)
-        {
-            //Get acceleration based on current gear if speed is within the gear's speed range
-            if (speed >= gearSpeeds[currentGear - 1] * 0.9 && speed <= gearSpeeds[currentGear] * 1.1)
-            {
-                acceleration = accelerations[currentGear - 1];
-            }
-            //Set acceleration to first gear acceleration otherwise
-            else
-            {
-                acceleration = accelerations[0];
-            }
-
-            //Accelerate
-            if (verticalInput == 1)
-            {
-                rb.AddForce(transform.forward * acceleration * Time.deltaTime, ForceMode.Impulse);
-            }
-            //Brake
-            else if (verticalInput == -1)
-            {
-                rb.AddForce(transform.forward * -brakeForce * Time.deltaTime, ForceMode.Impulse);
-            }
-
-            //Turn the car and wheels if the car is going fast enough
-            if (speed > minSpeedBeforeTurning)
-            {
-                transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
-                wheelFL.transform.localRotation = Quaternion.Euler(0, turnSpeed / 2 * horizontalInput, 90);
-                wheelFR.transform.localRotation = Quaternion.Euler(0, turnSpeed / 2 * horizontalInput, -90);
-            }
-        }
-
-        //Rotate the wheels
-        rimFL.transform.Rotate(Vector3.back, speed);
-        rimFR.transform.Rotate(Vector3.back, speed);
-        rimRL.transform.Rotate(Vector3.back, speed);
-        rimRR.transform.Rotate(Vector3.back, speed);
     }
 }

@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Loading.unity
+    guid: 623006da3744dce4781d4ec40d88397a
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 113eded411c8bbe42b3d8a01d2181530
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Sprint Track.unity
+    guid: 46478303f7c601e4e8584cb7f8d31d7f
+  - enabled: 1
+    path: Assets/Scenes/Drift Track.unity
+    guid: e82a0c7cf6aa6504daa551b17979d57e
   m_configObjects: {}

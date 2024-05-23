@@ -14,16 +14,18 @@ public class GearLabel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Initialize car game object
-        carScript = GameObject.Find("Car").GetComponent<PlayerControllerScript>();
 
-        //Initialize gear text box
-        gearText = GameObject.Find("Gear").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Initialize car game object
+        carScript = GameObject.Find("Car(Clone)").GetComponent<PlayerControllerScript>();
+
+        //Initialize gear text box
+        gearText = GameObject.Find("Gear").GetComponent<Text>();
+
         //Update the gear label
         gearText.text = carScript.currentGear.ToString();
     }

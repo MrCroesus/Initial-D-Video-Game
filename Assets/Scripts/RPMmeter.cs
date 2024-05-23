@@ -20,13 +20,15 @@ public class RPMmeter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Initialize car game object
-        carScript = GameObject.Find("Car").GetComponent<PlayerControllerScript>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Initialize car game object
+        carScript = GameObject.Find("Car(Clone)").GetComponent<PlayerControllerScript>();
+
         //Calculate RPM
         RPM = (carScript.speed)
             / (carScript.gearSpeeds[carScript.currentGear]);

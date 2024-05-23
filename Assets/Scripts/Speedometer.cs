@@ -20,19 +20,21 @@ public class Speedometer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         //Initialize car game object
-        carScript = GameObject.Find("Car").GetComponent<PlayerControllerScript>();
+        carScript = GameObject.Find("Car(Clone)").GetComponent<PlayerControllerScript>();
 
         //Get car top speed
         carTopSpeed = carScript.topSpeed;
 
         //Calculate conversion factor
         k = (maxAngle - minAngle) / carTopSpeed;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
         //Rotate the speedometer needle
         transform.rotation = Quaternion.Euler(0, 0, k * carScript.speed + minAngle);
     }

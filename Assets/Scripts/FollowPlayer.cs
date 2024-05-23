@@ -17,18 +17,20 @@ public class FollowPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Initialize car game object
-        car = GameObject.Find("Car");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Initialize car game object
+        car = GameObject.Find("Car(Clone)");
+
         //Calculate camera offset due to speed
         speedOffset = -car.GetComponent<PlayerControllerScript>().speed / 30;
 
         //Translate the camera
-        transform.position = car.transform.position + car.transform.forward * (horizontalOffset + speedOffset)
-            + car.transform.up * verticalOffset;
+        transform.position = car.transform.position + car.transform.forward * (horizontalOffset + speedOffset) + car.transform.up * verticalOffset;
+        transform.rotation = car.transform.rotation;
     }
 }

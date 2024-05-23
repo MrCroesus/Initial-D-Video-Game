@@ -17,11 +17,11 @@ public class CustomizationScript : MonoBehaviour
     //License plate text box
     private Text licensePlateText;
 
-    //Front license plate text box
-    public TextMesh frontPlateText;
+    //Rear license plate game object
+    private GameObject rearPlate;
 
     //Rear license plate text box
-    public TextMesh rearPlateText;
+    private TextMesh rearPlateText;
 
 
     // Start is called before the first frame update
@@ -39,8 +39,9 @@ public class CustomizationScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Set the license plate texts
-        frontPlateText.text = licensePlateText.text;
+        //Get and set the license plate text
+        rearPlate = GameObject.Find("BackLicensePlate");
+        rearPlateText = rearPlate.GetComponentInChildren<TextMesh>();
         rearPlateText.text = licensePlateText.text;
     }
 

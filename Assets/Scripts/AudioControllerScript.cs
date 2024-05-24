@@ -30,7 +30,7 @@ public class AudioControllerScript : MonoBehaviour
     void Start()
     {
         //Initialize car game object
-        carScript = GameObject.Find("Car").GetComponent<PlayerControllerScript>();
+        carScript = GameObject.Find("Car(Clone)").GetComponent<PlayerControllerScript>();
 
         //Initialize engine and drift audio sources
         engine = GameObject.Find("Engine").GetComponent<AudioSource>();
